@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Hono + Prisma Memo App</title>
+    <style>
+        body { font-family: sans-serif; max-width: 500px; margin: 40px auto; padding: 20px; }
+        .input-group { display: flex; gap: 10px; margin-bottom: 20px; }
+        input { flex: 1; padding: 8px; }
+        button { padding: 8px 16px; cursor: pointer; }
+        li { margin-bottom: 8px; padding: 8px; border-bottom: 1px solid #eee; }
+    </style>
+</head>
+<body>
+    <h1>簡単メモ</h1>
+    
+    <div class="input-group">
+        <input type="text" id="memoInput" placeholder="何か入力してください...">
+        <button onclick="addMemo()">登録</button>
+        <button onclick="deleteMemo()">削除</button>
+    </div>
+
+    <ul id="memoList"></ul>
+
+    <script>
+        const API_URL = 'http://localhost:3000/memos';
+
+        // 1. メモを取得して表示する関数
+        // m.idは、prismaで定義した要素名を指定している。データベースから取得した値を画面と紐づける。
+        async function fetchMemos() {
+            const res = await fetch(API_URL);
+            const memos = await res.json();
+            const list = document.getElementById('memoList');
+            list.innerHTML = memos.map(m => `
+                <li>
+                    <input type="checkbox" class="memo-checkbox" value="${m.id}">
+                    ${m.content} <br>
+                    <small style="color: #888;">${new Date(m.createdAt).toLocaleString()}</small>
+                </li>
+            `).join('');
+        }
+
+        // 2. メモを登録する関数
+        async function addMemo() {
+            const input = document.getElementById('memoInput');
+            const content = input.value;
+            if (!content) return;
+
+            await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ content })
+            });
+
+            input.value = ''; // 入力をクリア
+            fetchMemos();    // リストを更新
+        }
+
+        // 3.メモを削除する関数
+        async function deleteMemo() {
+            const checkboxes = document.querySelectorAll('.memo-checkbox:checked');
+            const ids = Array.from(checkboxes).map(cb => parseInt(cb.value));
+
+            // 選択されていることをチェック
+            if (ids.length === 0) {
+                alert('削除する項目を選択してください！');
+                return;
+            }
+            
+            if (!confirm(`${ids.length}件のメモを削除しますか？`)) return;
+
+                try {
+                    const response = await fetch(API_URL + '/delete', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ ids })
+                    });
+
+                    if (response.ok) {
+                        // 削除が成功したら再取得
+                        fetchMemos();
+                    } else {
+                        // サーバーが返したJSONを表示
+                        const errorData = await response.json();
+                        alert(`エラー: ${errorData.error}`); // 「エラー: 削除に失敗しました」と表示される
+                    }
+
+                } catch (error) {
+                    // サーバーに届く前（ネット断線など）の物理的なエラー
+                    console.error('通信エラー:', error);
+                    alert('通信に失敗しました');
+                };
+
+            
+        }
+
+
+
+        // 起動時に取得
+        fetchMemos();
+    </script>
+</body>
+</html>

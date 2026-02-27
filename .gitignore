@@ -1,0 +1,29 @@
+# 依存ライブラリ (容量が大きく、npm installで再生成できるため)
+node_modules/
+
+# 環境変数 (データベースのパスワードが含まれるため、絶対に公開しない)
+.env
+.env.test
+.env.local
+
+# Prismaの生成物
+# Prisma 7でカスタム出力（generatedなど）を使っている場合はそれも追加
+node_modules/.prisma
+/generated
+
+# TypeScriptのビルド結果 (コンパイル後のJSファイル)
+dist/
+out/
+
+# OS固有のキャッシュファイル
+.DS_Store
+Thumbs.db
+
+# ログファイル
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+#その他
+/postgres_data
+
