@@ -1,3 +1,7 @@
+# Macの場合、Colimaのインストールと起動から始める
+brew install colima docker
+colima start
+
 # 手動：.env.exampleをコピペし、コピーしたファイルを.envへ名前変更後、中身を好きな値に設定
 
 # 必要なモジュールをインストール
