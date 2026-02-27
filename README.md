@@ -28,6 +28,8 @@ npx prisma generate
 
 npx tsx src/index.ts
 
+# index.htmlをブラウザで開けばアプリが使える
+
 # ◆Docker 停止・削除
 
 ## コマンドの他に、実行したターミナルで「ctrl + c」を入力すると終了する
