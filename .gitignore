@@ -10,6 +10,7 @@ node_modules/
 # Prisma 7でカスタム出力（generatedなど）を使っている場合はそれも追加
 node_modules/.prisma
 /generated
+/prisma/migrations
 
 # TypeScriptのビルド結果 (コンパイル後のJSファイル)
 dist/
