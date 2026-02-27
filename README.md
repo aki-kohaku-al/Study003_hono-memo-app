@@ -20,7 +20,7 @@ npx prisma migrate dev --name init
 
 #### ※prisma migrate dev を実行すると、内部で自動的に prisma generate も実行されるため、基本的には migrate だけ打てば事足りる。
 
-#### 　今回のように「Clientが初期化されていない」というエラーが出たときだけ、手動で generate を叩くイメージでOK。
+#### 「Clientが初期化されていない」というようなエラーが出たときだけ、手動で generate を叩くイメージでOK。
 
 npx prisma generate
 
