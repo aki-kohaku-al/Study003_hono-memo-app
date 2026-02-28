@@ -1,3 +1,5 @@
+# ※開発終了。最低限のHonoとPrismaを使ったメモ機能を作った。今後何か作るときに参考にするために作った。
+
 # Macの場合、Colimaのインストールと起動から始める
 brew install colima docker
 colima start
